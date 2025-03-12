@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, NotFoundException } from '@nestjs/common';
 import { ConcertsService } from './concerts.service';
 import { CreateConcertDto } from './dto/create-concert.dto';
 import { UpdateConcertDto } from './dto/update-concert.dto';
@@ -18,8 +18,12 @@ export class ConcertsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.concertsService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const concert = await this.concertsService.findOne(+id);
+    if (concert == null) {
+      throw new NotFoundException("Nincs ilyen koncert")
+    }
+    return concert;
   }
 
   @Patch(':id')

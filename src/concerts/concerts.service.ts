@@ -19,14 +19,21 @@ export class ConcertsService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} concert`;
+    return this.db.concert.findUnique({
+      where: { id }
+    });
   }
 
   update(id: number, updateConcertDto: UpdateConcertDto) {
-    return `This action updates a #${id} concert`;
+    return this.db.concert.update({
+      where: { id },
+      data: updateConcertDto
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} concert`;
+    return this.db.concert.delete({
+      where: { id }
+    });
   }
 }
